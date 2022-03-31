@@ -1,0 +1,238 @@
+/*** Variables du site ***/
+:root {
+    --black:#100F0F;
+    --grey: #EFEFEF;
+    --green: #1FC36C;
+    --red: #960e0e; 
+    --base-margin : 4vw;
+}
+
+/**** Gestion des font **/
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+@font-face {
+    font-family: 'Akzidenz-Grotesk BQ';
+    src: url('../font/AkzidenzGroteskBQ-Reg.eot');
+    src: local('Akzidenz-Grotesk BQ Regular'), local('AkzidenzGroteskBQ-Reg'),
+        url('../font/AkzidenzGroteskBQ-Reg.eot?#iefix') format('embedded-opentype'),
+        url('../font/AkzidenzGroteskBQ-Reg.woff2') format('woff2'),
+        url('../font/AkzidenzGroteskBQ-Reg.woff') format('woff'),
+        url('../font/AkzidenzGroteskBQ-Reg.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+* {
+    box-sizing: border-box;
+}
+html, body {
+    margin:0;
+    padding:0;
+}
+/*** Style principal ***/
+body {
+    background-color: var(--black);
+    font-family: 'Roboto', sans-serif;
+    color: var(--grey);
+}
+
+/*** Header style ***/
+header {
+    border-bottom: var(--grey) solid 1px;
+    height:45px;
+}
+main, form {
+    height: 100%;
+}
+nav, .header-bar {
+    display: flex;
+    flex-direction: row;
+    height:100%;
+    align-items: center;
+    justify-content: space-between;
+}
+.logo {
+    font-family: 'Akzidenz-Grotesk BQ';
+    font-weight: normal;
+    color:var(--grey);
+    font-size: 20px;
+    text-decoration: none;
+}
+.button-nav {
+    color: var(--grey);
+}
+/** gestion générale des marges **/
+.mx-content {
+    margin-left:var(--base-margin);
+    margin-right:var(--base-margin);
+}
+
+svg {
+    fill:var(--grey);
+    height:25px;
+    width:25px;
+}
+.ml-6{
+    margin-left:6vw;
+}
+.flex {
+    display:flex;
+}
+
+.display-amount {
+    height:10vh;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+}
+
+fieldset{
+    border: 0px;
+    display:flex;
+    flex-direction: column;
+    margin: 0 10vw 0 10vw;
+}
+
+h1 {
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+.header-bar h1 {
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.small-text {
+    font-size:x-small;
+    font-weight: 400;
+    margin-left:2vw;
+}
+
+.logo-crypto{
+    margin-right: 10px;
+}
+
+.crypto-display{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+ul {
+    display:flex;
+    flex-direction: column;
+    padding-left:10vw;
+    padding-right: 10vw;
+    padding-bottom: 0;
+    padding-top: 0;
+}
+
+li {
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+    list-style-type: none;
+    padding:6vw;
+    border-bottom: var(--grey) solid 2px;
+    font-weight: 600;
+}
+/***** Gestion du style des formulaires ****/
+
+input, select {
+    height:5vh;
+    background:none;
+    border: none;
+    color: var(--grey);
+    width: 100%;
+    margin-left: 10px;
+    font-size: 1em;
+}
+input:focus, select:focus{
+    border: none;
+    outline: none;
+}
+
+fieldset {
+    display:flex;
+    margin-top: 10vh;
+    height:100%
+}
+
+.input-container {
+    display: flex;
+    width: 100%;
+    border: var(--grey) 2px solid;
+    padding: 7px;
+    align-items: center;
+    margin: 2vh 0 1vh 0;
+    border-radius: 10px;
+}
+
+fieldset > button {
+    padding: 3vh;
+    position:fixed;
+    bottom:15vh;
+    font-size: larger;
+    font-weight: bold;
+    text-transform: uppercase;
+    border: none;
+    width: 70vw;
+    border-radius: 10px;
+}
+
+.success {
+    border: var(--green) 2px solid !important;
+}
+
+.error{
+    border: var(--red) 2px solid !important;
+}
+
+small {
+    margin-bottom: 4vh;
+}
+
+
+/** Message flash **/
+.flashes {
+    width:100vw;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    -moz-animation: cssAnimation 0s ease-in 5s forwards;
+    -webkit-animation: cssAnimation 0s ease-in 5s forwards;
+    -o-animation: cssAnimation 0s ease-in 5s forwards;
+    animation: cssAnimation 0s ease-in 5s forwards;
+    -webkit-animation-fill-mode: forwards;
+    animation-fill-mode: forwards;
+}
+
+.flashes-success {
+    background-color: var(--green);
+    border: var(--green) 2px solid !important;
+    color:var(--black);
+}
+
+.flashes-error {
+    border: var(--red) 2px solid !important;
+    background-color: var(--red);
+    color:var(--grey);
+}
+
+@keyframes cssAnimation {
+    to {
+        width:0;
+        height:0;
+        overflow:hidden;
+        visibility: hidden;
+    }
+}
+@-webkit-keyframes cssAnimation {
+    to {
+        width:0;
+        height:0;
+        visibility:hidden;
+        overflow: hidden;
+    }
+}
