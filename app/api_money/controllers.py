@@ -1,9 +1,8 @@
-from key import API_KEY_COINMARKET
+from .key import API_KEY_COINMARKET
 from requests import Session
 from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 import json
-
-from ..main import cache
+from ..resources import cache
 
 # Url de production
 base_url = 'https://pro-api.coinmarketcap.com'
