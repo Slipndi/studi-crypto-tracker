@@ -22,9 +22,7 @@ cache.init_app(app)
 @app.route("/", methods=['GET'])
 def home() -> render_template:
     cryptomonaies = get_crypto_from_database_with_details();
-    amount = 0
-    for crypto_api, price_compare, actual_price, quantity in cryptomonaies :
-        amount += price_compare * quantity
+    amount = get_amount(cryptomonaies)
     return render_template('crypto/index.html', cryptomonnaies=cryptomonaies, amount=amount)
 
 @app.route('/remove', methods=['GET','POST'])
@@ -56,8 +54,6 @@ def remove_value_crypto() -> render_template :
         else : 
             update_crypto(cryptomonnaie_id, cryptomonnaie_quantity)
         return home()
-
-
 
 @app.route('/add', methods=['GET','POST'])
 def add_new_crypto() -> render_template :
@@ -99,8 +95,6 @@ def add_new_crypto() -> render_template :
         flash(e, "error")
         return redirect(request.url)
 
-
-
 def get_crypto_from_database_with_details() -> list :
     all_cryptomonnaies = get_all_actual_crypto()['data']
     data = get_crypto_in_database()
@@ -115,3 +109,9 @@ def get_crypto_from_database_with_details() -> list :
                 # création d'un tableau unique pour faciliter le traitement dans la vue
                 cryptomonaies.append([crypto_api, price_compare, actual_price, quantity])
     return cryptomonaies
+
+def get_amount(cryptomonaies) :
+    amount=0
+    for crypto_api, price_compare, actual_price, quantity in cryptomonaies :
+        amount += price_compare * quantity
+    return amount
