@@ -23,3 +23,36 @@ def insert_new_crypto_quantity(cryptomonnaie_id, cryptomonnaie_quantity, cryptom
     connection.commit()
     flash("Transaction Validée", "success")
     connection.close()
+    
+def delete_crypto(cryptomonnaie_id) :
+    connection = get_connection()
+    cursor = connection.cursor()
+    cursor.execute('DELETE FROM crypto_value WHERE crypto_id = ?', (cryptomonnaie_id,))
+    connection.commit()
+
+def update_crypto(cryptomonnaie_id, cryptomonnaie_quantity):
+    connection = get_connection()
+    cursor=connection.cursor()
+    cursor.execute('SELECT id, crypto_id,quantity FROM crypto_value WHERE crypto_id = ? ORDER BY Quantity, price ', (cryptomonnaie_id,))
+    query_result = cursor.fetchall()
+        
+    # si il existe qu'une ligne dans la base de donnée, on la met à jour
+    if len(query_result) == 1 :
+        new_quantity = query_result[0]['quantity'] - cryptomonnaie_quantity
+        cursor.execute('UPDATE crypto_value SET quantity = ? WHERE crypto_id = ? ', (new_quantity, cryptomonnaie_id ))
+        connection.commit()
+    else : 
+    # Sinon on vérifie ligne par ligne et fait évoluer la quantité
+        new_quantity = cryptomonnaie_quantity
+        for id, crypto_id, quantity in query_result : 
+            # tant que la nouvelle quantité est supérieur à 0
+                if quantity <= new_quantity :
+                    new_quantity -= quantity
+                    cursor.execute('DELETE FROM crypto_value where id = ?', (id, ))
+                else : 
+                    new_quantity = quantity-new_quantity
+                    cursor.execute('UPDATE crypto_value SET quantity = ? WHERE crypto_id = ? ', (new_quantity, cryptomonnaie_id ))
+                    new_quantity=0
+        connection.commit()
+        flash("Mise à jour réussie", "success")
+    connection.close()

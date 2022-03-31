@@ -7,14 +7,16 @@ from datetime import date
 
 
 from .api_money import get_all_actual_crypto
-from .db import get_crypto_in_database, insert_new_crypto_quantity
+from .db import get_crypto_in_database, insert_new_crypto_quantity, delete_crypto, update_crypto
 from .resources import cache
 
 app = Flask(__name__)
+# Génération d'une clef d'application
 secret = token_urlsafe(32)
 app.secret_key = secret
-
+# Activation de la protection CSRF
 csrf = CSRFProtect(app)
+# Activation du cache
 cache.init_app(app)
 
 @app.route("/", methods=['GET'])
@@ -27,7 +29,35 @@ def home() -> render_template:
 
 @app.route('/remove', methods=['GET','POST'])
 def remove_value_crypto() -> render_template :
-    return render_template()
+    if request.method == 'GET':
+        cryptomonnaies = get_crypto_from_database_with_details();
+        return render_template('/crypto/remove.html', cryptomonnaies = cryptomonnaies)
+        
+    if request.method == 'POST':
+        cryptomonnaie_id = int(request.values.get('cryptomonnaie'))
+        cryptomonnaie_quantity = int(request.values.get('quantity'))
+        # si la quantité est null ou inférieure à 0 erreur
+        if cryptomonnaie_quantity == "" or cryptomonnaie_quantity < 0:
+            flash("Quantité invalide", "error")
+            return redirect(request.url)
+        # si l'id n'est pas un entier positif
+        if cryptomonnaie_id == "" or cryptomonnaie_id < 0:
+            flash("Quantité invalide", "error")
+            return redirect(request.url)
+            
+        all_crypto_in_database = get_crypto_in_database()
+        quantity_available_in_database = [quantity for crypto_id, price, quantity in all_crypto_in_database if crypto_id == cryptomonnaie_id]
+        if quantity_available_in_database[0] <= cryptomonnaie_quantity :
+            try : 
+                delete_crypto(cryptomonnaie_id)
+                flash("Suppression réussie", "success")
+            except Exception as e:
+                flash(e, "error")
+        else : 
+            update_crypto(cryptomonnaie_id, cryptomonnaie_quantity)
+        return home()
+
+
 
 @app.route('/add', methods=['GET','POST'])
 def add_new_crypto() -> render_template :
