@@ -3,6 +3,7 @@ from requests import Session
 from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 import json
 
+from ..main import cache
 
 # Url de production
 base_url = 'https://pro-api.coinmarketcap.com'
@@ -16,6 +17,7 @@ session.headers.update({
     'X-CMC_PRO_API_KEY': API_KEY_COINMARKET
 })
 
+@cache.cached(timeout=18000, key_prefix='all_crypto')
 def get_all_actual_crypto() -> json :
     """ Récupération de la liste des cryptocurrency à la mode actuellement
         Effectue l'appel sur l'api et récupère le résultat au format json pour traitement
