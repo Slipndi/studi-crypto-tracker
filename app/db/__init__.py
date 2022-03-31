@@ -1,1 +1,1 @@
-from .db import get_crypto_in_database, get_connection
+from .db import get_crypto_in_database, get_connection, insert_new_crypto_quantity

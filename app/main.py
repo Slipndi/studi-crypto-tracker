@@ -7,7 +7,7 @@ from datetime import date
 
 
 from .api_money import get_all_actual_crypto
-from .db import get_crypto_in_database, get_connection
+from .db import get_crypto_in_database, insert_new_crypto_quantity
 from .resources import cache
 
 app = Flask(__name__)
@@ -34,7 +34,6 @@ def add_new_crypto() -> render_template :
     cryptomonnaies = get_all_actual_crypto()
     if request.method == 'GET':
         return render_template('/crypto/add.html', cryptomonnaies=cryptomonnaies)
-        
     cryptomonnaie_id = int(request.values.get('cryptomonnaie'))
     cryptomonnaie_quantity = int(request.values.get('quantity'))
     cryptomonnaie_value = float(request.values.get('euro_price'))
@@ -63,19 +62,14 @@ def add_new_crypto() -> render_template :
         flash("Le tarif unitaire n'est pas bon")
         return redirect(request.url)    
     ###################################
-
-    # insertion en base de donnée
     try:
-        connection = get_connection()
-        cursor = connection.cursor()
-        cursor.execute("INSERT INTO crypto_value (crypto_id, name, price, quantity, date) VALUES (?, ?, ?, ?, ?)",(cryptomonnaie_id, cryptomonnaie_name,cryptomonnaie_unique_price, cryptomonnaie_quantity, date.today()))
-        cursor.commit()
-        flash("Transaction Validée", "success")
-        connection.close()
+        insert_new_crypto_quantity(cryptomonnaie_id, cryptomonnaie_quantity, cryptomonnaie_name, cryptomonnaie_unique_price)
         return home()
     except Exception as e:
         flash(e, "error")
         return redirect(request.url)
+
+
 
 def get_crypto_from_database_with_details() -> list :
     all_cryptomonnaies = get_all_actual_crypto()['data']

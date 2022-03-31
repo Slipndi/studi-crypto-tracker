@@ -1,9 +1,6 @@
-from multiprocessing import connection
 import sqlite3
-import click
-
+from datetime import date
 from flask import flash
-from flask.cli import with_appcontext
 
 def get_connection() :
     connection = sqlite3.connect('app.sqlite')
@@ -18,3 +15,11 @@ def get_crypto_in_database() :
     data_from_local_database = cursor.fetchall()
     connection.close()
     return data_from_local_database
+
+def insert_new_crypto_quantity(cryptomonnaie_id, cryptomonnaie_quantity, cryptomonnaie_name, cryptomonnaie_unique_price) :
+    connection = get_connection()
+    cursor = connection.cursor()
+    cursor.execute("INSERT INTO crypto_value (crypto_id, name, price, quantity, date) VALUES (?, ?, ?, ?, ?)",(cryptomonnaie_id, cryptomonnaie_name,cryptomonnaie_unique_price, cryptomonnaie_quantity, date.today()))
+    connection.commit()
+    flash("Transaction Validée", "success")
+    connection.close()
