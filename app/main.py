@@ -14,6 +14,7 @@ app = Flask(__name__)
 # Génération d'une clef d'application
 secret = token_urlsafe(32)
 app.secret_key = secret
+# Je rends le CSRF plus permissif car je rencontre des bugs aléatoire sur Heroku
 app.config["WTF_CSRF_SSL_STRICT"]=False
 # Activation de la protection CSRF
 csrf = CSRFProtect(app)
@@ -96,6 +97,11 @@ def add_new_crypto() -> render_template :
     except Exception as e:
         flash(e, "error")
         return redirect(request.url)
+
+@app.route('/amount-graph', methods=['GET'])
+def display_amount_graph() -> render_template :
+    return render_template('crypto/amount.html')
+
 
 def get_crypto_from_database_with_details() -> list :
     all_cryptomonnaies = get_all_actual_crypto()['data']

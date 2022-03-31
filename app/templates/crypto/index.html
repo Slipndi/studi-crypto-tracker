@@ -63,3 +63,11 @@
     {% endfor %}
 </ul>
 {% endblock %}
+{% block script %}
+<script>
+    const displayAmountContainer = document.getElementsByClassName('display-amount')[0]
+    displayAmountContainer.addEventListener('click',()=>{
+            window.open("{{ url_for('display_amount_graph') }}","_self");
+        });
+</script>
+{% endblock %}
