@@ -14,8 +14,10 @@ app = Flask(__name__)
 # Génération d'une clef d'application
 secret = token_urlsafe(32)
 app.secret_key = secret
+app.config["WTF_CSRF_SSL_STRICT"]=False
 # Activation de la protection CSRF
 csrf = CSRFProtect(app)
+
 # Activation du cache
 cache.init_app(app)
 
