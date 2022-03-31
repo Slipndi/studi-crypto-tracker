@@ -1,4 +1,4 @@
-from app.api_keys import API_KEY_COINMARKET
+from key import API_KEY_COINMARKET
 from requests import Session, Request
 from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 import json
