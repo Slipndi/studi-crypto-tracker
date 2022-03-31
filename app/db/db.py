@@ -65,3 +65,11 @@ def insert_amount_in_database(amount):
                 )
     connection.commit()
     connection.close()
+    
+def get_amount() -> list :
+    connection = get_connection()
+    cursor = connection.cursor()
+    cursor.execute('SELECT date, value FROM evolution_gain ORDER BY Date')
+    data = cursor.fetchall()
+    connection.close()
+    return data

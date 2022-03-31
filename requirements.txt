@@ -4,3 +4,4 @@ requests==2.27.1
 Flask_caching==1.10.1
 flask_wtf
 APScheduler==3.0.0
+matplotlib==3.3.1

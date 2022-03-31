@@ -4,6 +4,7 @@ from secrets import token_urlsafe
 from flask import Flask, flash, render_template, redirect, request
 from flask_wtf.csrf import CSRFProtect
 from datetime import date
+from .charts import get_amount_chart
 
 
 from .api_money import get_all_actual_crypto
@@ -100,7 +101,8 @@ def add_new_crypto() -> render_template :
 
 @app.route('/amount-graph', methods=['GET'])
 def display_amount_graph() -> render_template :
-    return render_template('crypto/amount.html')
+    chart = get_amount_chart()
+    return render_template('crypto/amount.html', chart=chart)
 
 
 def get_crypto_from_database_with_details() -> list :
