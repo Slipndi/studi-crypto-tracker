@@ -56,3 +56,12 @@ def update_crypto(cryptomonnaie_id, cryptomonnaie_quantity):
         connection.commit()
         flash("Mise à jour réussie", "success")
     connection.close()
+    
+def insert_amount_in_database(amount):
+    connection = get_connection()
+    cursor = connection.cursor()
+    cursor.execute("INSERT INTO evolution_gain (value, date) VALUES (?, ?)",
+                    (amount, date.today())
+                )
+    connection.commit()
+    connection.close()
