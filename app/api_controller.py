@@ -19,10 +19,11 @@ session.headers.update({
 
 
 def get_all_actual_crypto() -> json :
-    ''' 
-        Récupération de la liste des cryptocurrency à la mode actuellement
+    """ Récupération de la liste des cryptocurrency à la mode actuellement
         Effectue l'appel sur l'api et récupère le résultat au format json pour traitement
-    '''
+    Returns:
+        json: Récupération des 50 cryptomonnaies de l'api
+    """    
     url = base_url+'/v1/cryptocurrency/listings/latest'
     parameters = {
         'start':'1',
