@@ -34,6 +34,12 @@ csrf = CSRFProtect(app)
 cache.init_app(app)
 
 def get_crypto_from_database_with_details() -> list :
+    """Récupération de toutes les cryptomonnaies en base de donnée
+    concaténation avec les informations nécessaires de l'api
+
+    Returns:
+        list: [ (int)crypto_api, (float) price_compare, (float) actual_price, (float) quantity]
+    """    
     all_cryptomonnaies = get_all_actual_crypto()['data'] 
     data = get_crypto_in_database()
     cryptomonaies = []
@@ -48,7 +54,15 @@ def get_crypto_from_database_with_details() -> list :
                 cryptomonaies.append([crypto_api, price_compare, actual_price, quantity])
     return cryptomonaies
 
-def get_amount(cryptomonaies) :
+def get_amount(cryptomonaies) -> float :
+    """
+        Récupération de la valorisation actuelle de la cryptomonnaie selectionnée
+    Args:
+        cryptomonaies (list): [ (int)crypto_api, (float) price_compare, (float) actual_price, (float) quantity]
+
+    Returns:
+        float: valorisation calculé de la cryptomonnaie
+    """    
     amount=0
     for crypto_api, price_compare, actual_price, quantity in cryptomonaies :
         amount += Decimal(price_compare) * quantity
@@ -59,7 +73,7 @@ def get_crypto_in_database() -> list :
     groupées par leurs id, renvoyant le prix le plus cher et la somme totale d'unité en notre possession
 
     Returns:
-        list: (int) crypto_id, (float) price, (int) quantity
+        list: [ (int) crypto_id, (float) price, (int) quantity ]
     """    
     cursor = mydb.cursor()
     # récupération des id et prix dans la base de donnée
@@ -157,12 +171,25 @@ def get_all_amount_from_database() -> list :
 
 @app.route("/", methods=['GET'])
 def home() -> render_template:
+    """ Controller principale de la route /home
+    récupération des informations et affichage sur la page principale de l'application
+
+    Returns:
+        render_template: renvoi le template templates/crypto/index.html
+    """    
     cryptomonaies = get_crypto_from_database_with_details();
     amount = get_amount(cryptomonaies)
     return render_template('crypto/index.html', cryptomonnaies=cryptomonaies, amount=amount)
 
 @app.route('/remove', methods=['GET','POST'])
 def remove_value_crypto() -> render_template :
+    """ Affichage du formulaire en cas d'appel via la route GET
+    Vérification du formulaire de suppression/update via la route POST
+
+    Returns:
+        render_template:    POST : templates/crypto/index.html
+                            GET : templates/crypto/remove.html
+    """    
     if request.method == 'GET':
         cryptomonnaies = get_crypto_from_database_with_details();
         return render_template('/crypto/remove.html', cryptomonnaies = cryptomonnaies)
@@ -193,6 +220,13 @@ def remove_value_crypto() -> render_template :
 
 @app.route('/add', methods=['GET','POST'])
 def add_new_crypto() -> render_template :
+    """Ajouter une nouvelle cryptomonnaie renseignée dans la base de donnée
+    la requête GET permet d'accéder au formulaire, la requête POST de traiter celui-ci
+    
+    Returns:
+        render_template:    GET-> templates/crypto/add.html
+                            POST-> templates/crypto/home.html
+    """    
     cryptomonnaies = get_all_actual_crypto()
     if request.method == 'GET':
         return render_template('/crypto/add.html', cryptomonnaies=cryptomonnaies)
@@ -234,6 +268,11 @@ def add_new_crypto() -> render_template :
 
 @app.route('/amount-graph', methods=['GET'])
 def display_amount_graph() -> render_template :
+    """ Génération du graphique de valorisation et affichage sur le template
+
+    Returns:
+        render_template: templates/crypto/amount.html
+    """    
     from .charts import get_amount_chart
     chart = get_amount_chart()
     return render_template('crypto/amount.html', chart=chart)

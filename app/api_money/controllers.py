@@ -13,7 +13,7 @@ session.headers.update({
 # Url de production
 base_url = 'https://pro-api.coinmarketcap.com'
 
-#@cache.cached(timeout=18000, key_prefix='all_crypto')
+@cache.cached(timeout=18000, key_prefix='all_crypto')
 def get_all_actual_crypto() -> json :
     """ Récupération de la liste des cryptocurrency à la mode actuellement
         Effectue l'appel sur l'api et récupère le résultat au format json pour traitement
