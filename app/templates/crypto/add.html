@@ -15,7 +15,7 @@
 {% block content %}
 <form method="post" action="{{ url_for('add_new_crypto') }}">
     <fieldset>
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" id='csrf_token'/>
         <input type="hidden" name="crypto_name" id="crypto_name"/>
         <input type="hidden" name="unique_price" id="unique_price"/>
 
@@ -139,6 +139,7 @@ const euroPriceHolder = document.getElementById('euro_price');
 const cryptomonnaiesJson = {{ cryptomonnaies.data | tojson }};
 const submitButton = document.getElementById('submit');
 const uniquePrice = document.getElementById('unique_price');
+const csrf_token = document.getElementById('csrf_token');
 
 let crypto;
 
@@ -212,6 +213,7 @@ quantity.addEventListener('input', () => updatePrice(crypto));
 
 // Blocage de l'envoi du formulaire au clic pour vérification
 submitButton.addEventListener('click',(event) => {
+    csrf_token.value="{{ csrf_token() }}";
     checkCryptomonnaie() && checkQuantity() && checkEuroPrice() 
     ? true 
     : event.preventDefault();
