@@ -27,6 +27,7 @@ secret = token_urlsafe(32)
 app.secret_key = secret
 # Je rends le CSRF plus permissif car je rencontre des bugs aléatoire sur Heroku
 app.config["WTF_CSRF_SSL_STRICT"]=False
+app.config["WTF_CSRF_SECRET_KEY"]=os.getenv("API_KEY_COIN")
 # Activation de la protection CSRF
 csrf = CSRFProtect(app)
 # Activation du cache
