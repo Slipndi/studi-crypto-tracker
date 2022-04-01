@@ -14,7 +14,7 @@
 {% block content %}
 <form method="POST" action="{{ url_for('remove_value_crypto') }}">
     <fieldset>
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" id="csrf_token"/>
         <label for="cryptomonnaie">Cryptomonnaie</label>
         <div class="input-container">
             <!-- Icone -->

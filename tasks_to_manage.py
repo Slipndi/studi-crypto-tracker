@@ -5,4 +5,4 @@ def scheduled_job():
     amount = get_amount(cryptomonaies)
     insert_amount_in_database(amount)
     
-scheduled_job()
+scheduled_job()    
