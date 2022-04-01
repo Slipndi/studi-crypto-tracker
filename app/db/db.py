@@ -1,16 +1,20 @@
 import sqlite3
+import os
+from flaskext.mysql import MySQL
 from datetime import date
 from flask import flash
 
-def get_connection() :
-    """ Créer une connexion sqlite3 sur la bdd embarquée
 
-    Returns:
-        connection à app.sqlite
-    """    
-    connection = sqlite3.connect('app.sqlite')
-    connection.row_factory=sqlite3.Row
-    return connection
+
+
+def get_connection() :
+    mysql = MySQL(
+    host=os.getenv("DB_HOST"), 
+    user=os.getenv("DB_USERNAME"),
+    password=os.getenv("DB_PASSWORD"),
+    db=os.getenv("DB_DATABASE")
+    )
+    return mysql.get_db()
 
 def get_crypto_in_database() -> list :
     """Récupération de toutes les cryptomonnaies insérées dans la table crypto_value
@@ -19,13 +23,12 @@ def get_crypto_in_database() -> list :
     Returns:
         list: (int) crypto_id, (float) price, (int) quantity
     """    
-    connection=get_connection()
+    connection = get_connection()
     cursor = connection.cursor()
     # récupération des id et prix dans la base de donnée
     cursor.execute("SELECT crypto_id, max(price) price, sum(quantity) quantity FROM crypto_value group by crypto_id order by crypto_id")
     data_from_local_database = cursor.fetchall()
-    connection.close()
-    
+
     return data_from_local_database
 
 def insert_new_crypto_quantity(cryptomonnaie_id, cryptomonnaie_quantity, cryptomonnaie_name, cryptomonnaie_unique_price) -> None:
@@ -43,11 +46,11 @@ def insert_new_crypto_quantity(cryptomonnaie_id, cryptomonnaie_quantity, cryptom
     connection = get_connection()
     cursor = connection.cursor()
     cursor.execute("INSERT INTO crypto_value (crypto_id, name, price, quantity, date) VALUES (?, ?, ?, ?, ?)",(cryptomonnaie_id, cryptomonnaie_name,cryptomonnaie_unique_price, cryptomonnaie_quantity, date.today()))
-    connection.commit()
+    get_connection.commit()
     flash("Transaction Validée", "success")
-    connection.close()
+    cursor.close()
     
-def delete_crypto(cryptomonnaie_id) -> None :
+def delete_crypto(cryptomonnaie_id) :
     """Suppression d'une cryptomonnaie dans la base de donnée sqlite
 
     Args:
@@ -61,7 +64,7 @@ def delete_crypto(cryptomonnaie_id) -> None :
     cursor.execute('DELETE FROM crypto_value WHERE crypto_id = ?', (cryptomonnaie_id,))
     connection.commit()
 
-def update_crypto(cryptomonnaie_id, cryptomonnaie_quantity) -> None:
+def update_crypto(cryptomonnaie_id, cryptomonnaie_quantity) :
     """Mise à jour de la quantité de cryptomonnaie concerné 
 
     Args:
@@ -97,7 +100,7 @@ def update_crypto(cryptomonnaie_id, cryptomonnaie_quantity) -> None:
         flash("Mise à jour réussie", "success")
     connection.close()
     
-def insert_amount_in_database(amount) -> None :
+def insert_amount_in_database(amount) :
     """Insertion de la valorisation dans la table evolution_gain
 
     Args:

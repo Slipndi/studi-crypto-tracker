@@ -24,7 +24,6 @@ app.secret_key = secret
 app.config["WTF_CSRF_SSL_STRICT"]=False
 # Activation de la protection CSRF
 csrf = CSRFProtect(app)
-
 # Activation du cache
 cache.init_app(app)
 
