@@ -3,7 +3,7 @@ from io import BytesIO
 
 from matplotlib.figure import Figure
 
-from ..db import get_amount
+from ..main import get_all_amount_from_database
 
 # Définition de la couleur du graphique
 axis_color = 'white'
@@ -18,7 +18,7 @@ def get_amount_chart() -> str :
     """    
     fig = Figure(facecolor='white')
     ax = fig.subplots()
-    data = get_amount()
+    data = get_all_amount_from_database()
     ax.plot([date for date,value in data], [value for date,value in data], color=axis_color)
     # style des axes
     ax.tick_params(color=axis_color, labelcolor=axis_color)

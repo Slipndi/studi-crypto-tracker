@@ -10,7 +10,7 @@ const showError = (input, message) => {
     // get the form-field element
     const formField = input.parentElement;
     // add the error class
-    formField.classList.remove('success');
+    formField.classList.contains('success') ?? formField.classList.remove('success');
     formField.classList.add('error');
 
     // show the error message

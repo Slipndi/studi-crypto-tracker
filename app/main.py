@@ -1,22 +1,25 @@
 
+import os
 from datetime import date
-from re import X
+from decimal import Decimal
 from secrets import token_urlsafe
 
 from flask import Flask, flash, redirect, render_template, request
 from flask_wtf.csrf import CSRFProtect
+from flaskext.mysql import MySQL
 
 from .api_money import get_all_actual_crypto
-from .charts import get_amount_chart
-from .db import (
-    delete_crypto, 
-    get_crypto_in_database,
-    insert_new_crypto_quantity, 
-    update_crypto
-)
+
+#from .db import (delete_crypto, get_crypto_in_database,insert_new_crypto_quantity, update_crypto)
 from .resources import cache
 
 app = Flask(__name__)
+app.config['MYSQL_DATABASE_HOST'] = os.getenv("DB_HOST")  
+app.config['MYSQL_DATABASE_USER'] = os.getenv("DB_USERNAME")
+app.config['MYSQL_DATABASE_PASSWORD'] = os.getenv("DB_PASSWORD")
+app.config['MYSQL_DATABASE_DB'] = os.getenv("DB_DATABASE")
+
+mysql = MySQL(app)
 # Génération d'une clef d'application
 secret = token_urlsafe(32)
 app.secret_key = secret
@@ -26,6 +29,143 @@ app.config["WTF_CSRF_SSL_STRICT"]=False
 csrf = CSRFProtect(app)
 # Activation du cache
 cache.init_app(app)
+
+def get_crypto_from_database_with_details() -> list :
+    all_cryptomonnaies = get_all_actual_crypto()['data']
+    data = get_crypto_in_database()
+    cryptomonaies = []
+    for crypto_api in all_cryptomonnaies :
+        for crypto_id, price, quantity in data :
+            if crypto_id == crypto_api['id'] :
+                # récupération du prix actuel de la crypto
+                actual_price = crypto_api['quote']['EUR']['price']
+                # comparation des prix pour l'affichage de l'icone
+                price_compare = actual_price - price
+                # création d'un tableau unique pour faciliter le traitement dans la vue
+                cryptomonaies.append([crypto_api, price_compare, actual_price, quantity])
+    return cryptomonaies
+
+def get_amount(cryptomonaies) :
+    amount=0
+    for crypto_api, price_compare, actual_price, quantity in cryptomonaies :
+        amount += Decimal(price_compare) * quantity
+    return amount
+
+def get_connection() :
+    return mysql.get_db()
+
+def get_crypto_in_database() -> list :
+    """Récupération de toutes les cryptomonnaies insérées dans la table crypto_value
+    groupées par leurs id, renvoyant le prix le plus cher et la somme totale d'unité en notre possession
+
+    Returns:
+        list: (int) crypto_id, (float) price, (int) quantity
+    """    
+    connection = get_connection()
+    cursor = connection.cursor()
+    # récupération des id et prix dans la base de donnée
+    cursor.execute("SELECT crypto_id, max(price) price, sum(quantity) quantity FROM crypto_value group by crypto_id order by crypto_id")
+    data_from_local_database = cursor.fetchall()
+
+    return data_from_local_database
+
+def insert_new_crypto_quantity(cryptomonnaie_id, cryptomonnaie_quantity, cryptomonnaie_name, cryptomonnaie_unique_price):
+    """ Insertion des valeurs dans la table crypto_value
+
+    Args:
+        cryptomonnaie_id (int): Identifiant unique de la cryptomonnaie fournit par l'api
+        cryptomonnaie_quantity (int): quantité renseignée
+        cryptomonnaie_name (str): nom de la cryptomonnaie fournit par l'api
+        cryptomonnaie_unique_price (float): valeur unitaire de la crypto lors de l'achat
+        
+    Returns:
+        None
+    """    
+    connection = get_connection()
+    cursor = connection.cursor()
+    cursor.execute("INSERT INTO crypto_value (crypto_id, name, price, quantity, date) VALUES (?, ?, ?, ?, ?)",(cryptomonnaie_id, cryptomonnaie_name,cryptomonnaie_unique_price, cryptomonnaie_quantity, date.today()))
+    get_connection.commit()
+    flash("Transaction Validée", "success")
+    cursor.close()
+    
+def delete_crypto(cryptomonnaie_id) :
+    """Suppression d'une cryptomonnaie dans la base de donnée sqlite
+
+    Args:
+        cryptomonnaie_id (int): Code unique de la cryptomonnaie fournit par l'api
+        
+    Returns : 
+        None
+    """    
+    connection = get_connection()
+    cursor = connection.cursor()
+    cursor.execute('DELETE FROM crypto_value WHERE crypto_id = ?', (cryptomonnaie_id,))
+    connection.commit()
+
+def update_crypto(cryptomonnaie_id, cryptomonnaie_quantity) :
+    """Mise à jour de la quantité de cryptomonnaie concerné 
+
+    Args:
+        cryptomonnaie_id (int): Identifiant unique de la cryptomonnaie fournit par l'api
+        cryptomonnaie_quantity (int): Nouvelle quantité renseignée
+    
+    Returns : 
+        None
+    """    
+    connection = get_connection()
+    cursor=connection.cursor()
+    cursor.execute('SELECT id, crypto_id,quantity FROM crypto_value WHERE crypto_id = ? ORDER BY Quantity, price ', (cryptomonnaie_id,))
+    query_result = cursor.fetchall()
+        
+    # si il existe qu'une ligne dans la base de donnée, on la met à jour
+    if len(query_result) == 1 :
+        new_quantity = query_result[0]['quantity'] - cryptomonnaie_quantity
+        cursor.execute('UPDATE crypto_value SET quantity = ? WHERE crypto_id = ? ', (new_quantity, cryptomonnaie_id ))
+        connection.commit()
+    else : 
+    # Sinon on vérifie ligne par ligne et fait évoluer la quantité
+        new_quantity = cryptomonnaie_quantity
+        for id, crypto_id, quantity in query_result : 
+            # tant que la nouvelle quantité est supérieur à 0
+                if quantity <= new_quantity :
+                    new_quantity -= quantity
+                    cursor.execute('DELETE FROM crypto_value where id = ?', (id, ))
+                else : 
+                    new_quantity = quantity-new_quantity
+                    cursor.execute('UPDATE crypto_value SET quantity = ? WHERE crypto_id = ? ', (new_quantity, cryptomonnaie_id ))
+                    new_quantity=0
+        connection.commit()
+        flash("Mise à jour réussie", "success")
+    connection.close()
+    
+def insert_amount_in_database(amount) :
+    """Insertion de la valorisation dans la table evolution_gain
+
+    Args:
+        amount (float): valorisation des cryptos présente en base 
+    
+    Returns :
+        None
+    """    
+    connection = get_connection()
+    cursor = connection.cursor()
+    cursor.execute("INSERT INTO evolution_gain (value, date) VALUES (?, ?)",
+                    (amount, date.today())
+                )
+    connection.commit()
+    connection.close()
+    
+def get_all_amount_from_database() -> list :
+    """Retourne l'ensemble des valorisations de la table evolution_gain trié par date
+    Returns:
+        list: (date) date, (float) value 
+    """    
+    connection = get_connection()
+    cursor = connection.cursor()
+    cursor.execute('SELECT date, value FROM evolution_gain ORDER BY Date')
+    data = cursor.fetchall()
+    connection.close()
+    return data
 
 @app.route("/", methods=['GET'])
 def home() -> render_template:
@@ -105,27 +245,6 @@ def add_new_crypto() -> render_template :
 
 @app.route('/amount-graph', methods=['GET'])
 def display_amount_graph() -> render_template :
+    from .charts import get_amount_chart
     chart = get_amount_chart()
     return render_template('crypto/amount.html', chart=chart)
-
-
-def get_crypto_from_database_with_details() -> list :
-    all_cryptomonnaies = get_all_actual_crypto()['data']
-    data = get_crypto_in_database()
-    cryptomonaies = []
-    for crypto_api in all_cryptomonnaies :
-        for crypto_id, price, quantity in data :
-            if crypto_id == crypto_api['id'] :
-                # récupération du prix actuel de la crypto
-                actual_price = crypto_api['quote']['EUR']['price']
-                # comparation des prix pour l'affichage de l'icone
-                price_compare = actual_price - price
-                # création d'un tableau unique pour faciliter le traitement dans la vue
-                cryptomonaies.append([crypto_api, price_compare, actual_price, quantity])
-    return cryptomonaies
-
-def get_amount(cryptomonaies) :
-    amount=0
-    for crypto_api, price_compare, actual_price, quantity in cryptomonaies :
-        amount += price_compare * quantity
-    return amount
