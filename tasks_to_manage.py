@@ -1,8 +1,8 @@
-from app.main import get_crypto_from_database_with_details, get_amount, insert_amount_in_database
+import app.main as main
 
 def scheduled_job():
-    cryptomonaies = get_crypto_from_database_with_details()
-    amount = get_amount(cryptomonaies)
-    insert_amount_in_database(amount)
+    cryptomonaies = main.get_crypto_from_database_with_details()
+    amount = main.get_amount(cryptomonaies)
+    main.insert_amount_in_database(amount)
     
 scheduled_job()    
