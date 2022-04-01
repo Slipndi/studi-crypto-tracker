@@ -2,6 +2,7 @@ import base64
 from io import BytesIO
 
 from matplotlib.figure import Figure
+import numpy as np
 
 from ..main import get_all_amount_from_database
 
@@ -19,14 +20,32 @@ def get_amount_chart() -> str :
     fig = Figure(facecolor='white')
     ax = fig.subplots()
     data = get_all_amount_from_database()
-    ax.plot([date for date,value in data], [value for date,value in data], color=axis_color)
+    
+    axis_date= [date for date,value in data]
+    ordonnee_valeurs  = [value for date,value in data]
+    
+    ax.plot(axis_date, ordonnee_valeurs ,'wo-')
+    
     # style des axes
     ax.tick_params(color=axis_color, labelcolor=axis_color)
     ax.spines['bottom'].set_color(axis_color)
     ax.spines['left'].set_color(axis_color)
+    
+    start, end = ax.get_xlim()
+    ax.xaxis.set_ticks(np.arange(start, end, 0.712123))
     ax.set_ylabel('valorisation')     
     ax.xaxis.label.set_color(axis_color)
     ax.yaxis.label.set_color(axis_color)
+    
+    for x,y in zip(axis_date, ordonnee_valeurs):
+        label = "{:.2f}".format(y)
+        ax.annotate(
+            label, 
+            (x,y), 
+            textcoords="offset points", 
+            xytext=(10,15),
+            color=axis_color,
+            ha='center') 
 
     buf = BytesIO()
     fig.savefig(buf, format="png", transparent=True)
