@@ -5,4 +5,4 @@ Flask_caching==1.10.1
 flask_wtf
 APScheduler==3.0.0
 matplotlib==3.3.1
-flask-mysql
+mysql-connector-python
