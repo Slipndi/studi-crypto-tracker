@@ -1,14 +1,19 @@
 
+from datetime import date
 from re import X
 from secrets import token_urlsafe
-from flask import Flask, flash, render_template, redirect, request
-from flask_wtf.csrf import CSRFProtect
-from datetime import date
-from .charts import get_amount_chart
 
+from flask import Flask, flash, redirect, render_template, request
+from flask_wtf.csrf import CSRFProtect
 
 from .api_money import get_all_actual_crypto
-from .db import get_crypto_in_database, insert_new_crypto_quantity, delete_crypto, update_crypto
+from .charts import get_amount_chart
+from .db import (
+    delete_crypto, 
+    get_crypto_in_database,
+    insert_new_crypto_quantity, 
+    update_crypto
+)
 from .resources import cache
 
 app = Flask(__name__)
