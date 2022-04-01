@@ -1,4 +1,4 @@
-import app.main as main
+import app.app as app
 
 def scheduled_job():
     """Tache plannifiée une fois par jour, 
@@ -7,8 +7,8 @@ def scheduled_job():
         insertion en base de donnée chaque action est découpée dans une fonctionnalité 
         dans main.
     """    
-    cryptomonaies = main.get_crypto_from_database_with_details()
-    amount = main.get_amount(cryptomonaies)
-    main.insert_amount_in_database(amount)
+    cryptomonaies = app.get_crypto_from_database_with_details()
+    amount = app.get_amount(cryptomonaies)
+    app.insert_amount_in_database(amount)
     
 scheduled_job()    

@@ -4,7 +4,7 @@ from io import BytesIO
 from matplotlib.figure import Figure
 import numpy as np
 
-from ..main import get_all_amount_from_database
+from ..app import get_all_amount_from_database
 
 # Définition de la couleur du graphique
 axis_color = 'white'
