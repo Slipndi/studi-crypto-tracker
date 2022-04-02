@@ -33,6 +33,12 @@ csrf = CSRFProtect(app)
 # Activation du cache
 cache.init_app(app)
 
+
+
+def csrf_error(reason):
+    flash(reason, "error")
+    return redirect(request.url)
+
 def get_crypto_from_database_with_details() -> list :
     """Récupération de toutes les cryptomonnaies en base de donnée
     concaténation avec les informations nécessaires de l'api
