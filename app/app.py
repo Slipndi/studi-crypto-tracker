@@ -52,10 +52,10 @@ def get_crypto_from_database_with_details() -> list :
                 # comparation des prix pour l'affichage de l'icone
                 price_compare = actual_price - price
                 # création d'un tableau unique pour faciliter le traitement dans la vue
-                cryptomonaies.append([crypto_api, price_compare, actual_price, quantity])
+                cryptomonaies.append([crypto_api, price_compare, actual_price, float(quantity)])
     return cryptomonaies
 
-def get_amount(cryptomonaies) -> float :
+def get_amount(cryptomonaies : list) -> float :
     """
         Récupération de la valorisation actuelle de la cryptomonnaie selectionnée
     Args:
@@ -66,7 +66,7 @@ def get_amount(cryptomonaies) -> float :
     """    
     amount=0
     for crypto_api, price_compare, actual_price, quantity in cryptomonaies :
-        amount += Decimal(price_compare) * quantity
+        amount += price_compare * quantity
     return amount
 
 def get_crypto_in_database() -> list :
@@ -179,7 +179,7 @@ def home() -> render_template:
         render_template: renvoi le template templates/crypto/index.html
     """    
     cryptomonaies = get_crypto_from_database_with_details();
-    amount = get_amount(cryptomonaies)
+    amount = format(get_amount(cryptomonaies), '.4f')
     return render_template('crypto/index.html', cryptomonnaies=cryptomonaies, amount=amount)
 
 @app.route('/remove', methods=['GET','POST'])
