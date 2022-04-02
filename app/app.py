@@ -146,7 +146,7 @@ def update_crypto(cryptomonnaie_id, cryptomonnaie_quantity) :
                     cursor.execute('''UPDATE crypto_value SET quantity = %s WHERE crypto_id = %s ''', (new_quantity, cryptomonnaie_id ))
                     mydb.commit()
                     new_quantity=0
-        flash("Mise à jour réussie", "success")
+    flash("Mise à jour réussie", "success")
     
 def insert_amount_in_database(amount) :
     """Insertion de la valorisation dans la table evolution_gain
