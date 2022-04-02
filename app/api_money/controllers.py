@@ -2,8 +2,7 @@ import json
 import os
 from requests import Session
 from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
-
-from ..resources import cache
+from ..app import cache
 
 session = Session()
 session.headers.update({

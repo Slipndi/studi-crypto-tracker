@@ -1,18 +1,18 @@
 
 import os
+
 from datetime import date
 from decimal import Decimal
 from secrets import token_urlsafe
 
 from flask import Flask, flash, redirect, render_template, request
 from flask_wtf.csrf import CSRFProtect
+from flask_caching import Cache
 import mysql.connector
 
-from .api_money import get_all_actual_crypto
-
-from .resources import cache
-
 app = Flask(__name__)
+
+cache = Cache(config={'CACHE_TYPE':'SimpleCache', 'CACHE_DEFAULT_TIMEOUT':18000})
 
 mydb = mysql.connector.connect(
     host=os.getenv("DB_HOST"), 
@@ -40,6 +40,7 @@ def get_crypto_from_database_with_details() -> list :
     Returns:
         list: [ (int)crypto_api, (float) price_compare, (float) actual_price, (float) quantity]
     """    
+    from .api_money import get_all_actual_crypto
     all_cryptomonnaies = get_all_actual_crypto()['data'] 
     data = get_crypto_in_database()
     cryptomonaies = []
@@ -227,6 +228,7 @@ def add_new_crypto() -> render_template :
         render_template:    GET-> templates/crypto/add.html
                             POST-> templates/crypto/home.html
     """    
+    from .api_money import get_all_actual_crypto
     cryptomonnaies = get_all_actual_crypto()
     if request.method == 'GET':
         return render_template('/crypto/add.html', cryptomonnaies=cryptomonnaies)
