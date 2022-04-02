@@ -100,6 +100,7 @@ const selectedCrypto = document.getElementById('cryptomonnaie');
 const quantity = document.getElementById('quantity');
 const cryptomonnaies = {{ cryptomonnaies | tojson }};
 const submitButton = document.getElementById('submit');
+const csrf_token = document.getElementById('csrf_token');
 let crypto;
 
 
@@ -145,6 +146,7 @@ selectedCrypto.addEventListener('change', (event) => {
 
 // Blocage de l'envoi du formulaire au clic pour vérification
 submitButton.addEventListener('click',(event) => {
+    csrf_token.value="{{ csrf_token() }}";
     checkCryptomonnaie() && checkQuantity()
     ? true 
     : event.preventDefault();
