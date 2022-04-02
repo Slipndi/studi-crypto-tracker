@@ -129,7 +129,7 @@ def update_crypto(cryptomonnaie_id, cryptomonnaie_quantity) :
         
     # si il existe qu'une ligne dans la base de donnée, on la met à jour
     if len(query_result) == 1 :
-        new_quantity = query_result[0]['quantity'] - cryptomonnaie_quantity
+        new_quantity = query_result[0][2] - cryptomonnaie_quantity
         cursor.execute('''UPDATE crypto_value SET quantity = %s WHERE crypto_id = %s ''', (new_quantity, cryptomonnaie_id ))
         mydb.commit()
     else : 
@@ -213,6 +213,7 @@ def remove_value_crypto() -> render_template :
             
         all_crypto_in_database = get_crypto_in_database()
         quantity_available_in_database = [quantity for crypto_id, price, quantity in all_crypto_in_database if crypto_id == cryptomonnaie_id]
+        
         if quantity_available_in_database[0] <= cryptomonnaie_quantity :
             try : 
                 delete_crypto(cryptomonnaie_id)
