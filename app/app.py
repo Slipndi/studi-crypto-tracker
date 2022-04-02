@@ -172,6 +172,7 @@ def get_all_amount_from_database() -> list :
     cursor.execute('SELECT date, value FROM evolution_gain ORDER BY Date')
     return cursor.fetchall()
 
+
 @app.route("/", methods=['GET'])
 def home() -> render_template:
     """ Controller principale de la route /home
@@ -185,6 +186,7 @@ def home() -> render_template:
     return render_template('crypto/index.html', cryptomonnaies=cryptomonaies, amount=amount)
 
 @app.route('/remove', methods=['GET','POST'])
+@csrf.exempt
 def remove_value_crypto() -> render_template :
     """ Affichage du formulaire en cas d'appel via la route GET
     Vérification du formulaire de suppression/update via la route POST
@@ -222,6 +224,7 @@ def remove_value_crypto() -> render_template :
         return home()
 
 @app.route('/add', methods=['GET','POST'])
+@csrf.exempt
 def add_new_crypto() -> render_template :
     """Ajouter une nouvelle cryptomonnaie renseignée dans la base de donnée
     la requête GET permet d'accéder au formulaire, la requête POST de traiter celui-ci
