@@ -1,2 +1,3 @@
 .flaskenv
 .env
+app/db/schema.sql

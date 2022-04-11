@@ -15,3 +15,5 @@ CREATE TABLE evolution_gain (
     value FLOAT NOT NULL,
     date DATETIME NOT NULL
 );
+
+/** a mettre dans gitignore **/
