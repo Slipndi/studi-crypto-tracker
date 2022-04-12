@@ -30,7 +30,7 @@ jobs:
           envkey_FLASK_ENV: development
           envkey_FLASK_APP: run
           envkey_DB_HOST: wb39lt71kvkgdmw0.cbetxkdyhwsb.us-east-1.rds.amazonaws.com
-          envkey_DB_USERNAME: prtwpb7v8hv3ti8u
+          envkey_DB_USERNAME: ${{ secrets.DB_USERNAME }} #prtwpb7v8hv3ti8u
           envkey_DB_PASSWORD: d6e8edsvxa2bju44
           envkey_DB_DATABASE: atsp62l7dqdqz9ve
           envkey_API_KEY_COIN: 3144c6fc-815d-46d1-a588-60bc4e062a5c
