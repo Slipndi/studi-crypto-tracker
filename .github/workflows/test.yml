@@ -9,7 +9,6 @@ on:
 
 jobs:
   build:
-    environment: studi-crypto-tracker
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
