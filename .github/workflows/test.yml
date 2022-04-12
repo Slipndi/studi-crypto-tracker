@@ -33,7 +33,7 @@ jobs:
           envkey_DB_PASSWORD="d6e8edsvxa2bju44"
           envkey_DB_DATABASE="atsp62l7dqdqz9ve"
           envkey_API_KEY_COIN="3144c6fc-815d-46d1-a588-60bc4e062a5c"
-          file_name: .env
+          file_name:".env"
           
       - name : installation de pytest
         run: python -m pip install pytest
