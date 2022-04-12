@@ -148,6 +148,11 @@ input, select {
     margin-left: 10px;
     font-size: 1em;
 }
+
+select option {
+    background-color: var(--black);
+    color:var(--grey);
+}
 input:focus, select:focus{
     border: none;
     outline: none;
