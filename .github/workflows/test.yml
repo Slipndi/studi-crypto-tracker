@@ -15,7 +15,7 @@ jobs:
       - name: Install python version
         uses: gabrielfalcao/pyenv-action@v9
         with:
-          python-version: 3.9.12
+          versions : 3.9.12
           command: pip install -U pip
       
       - name: Install dependencies
