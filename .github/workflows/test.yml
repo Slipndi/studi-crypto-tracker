@@ -11,7 +11,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - run:  env
       - uses: actions/checkout@v2
       - name: Install Python 3
         uses: actions/setup-python@v1
@@ -38,12 +37,12 @@ jobs:
           API_KEY_COIN: ${{ secrets.API_KEY_COIN }}
         run: |
           export FLASK_ENV=development
-          export FLASK_APP=$FLASK_APP
-          export DB_HOST=${{ env.DB_HOST }}
-          export DB_USERNAME=${{ env.DB_USERNAME }}
-          export DB_PASSWORD=${{ env.DB_PASSWORD }}
-          export DB_DATABASE=${{ env.DB_DATABASE }}
-          export API_KEY_COIN=${{ env.API_KEY_COIN }}
+          export FLASK_APP=run
+          export DB_HOST="wb39lt71kvkgdmw0.cbetxkdyhwsb.us-east-1.rds.amazonaws.com"
+          export DB_USERNAME=prtwpb7v8hv3ti8u
+          export DB_PASSWORD=d6e8edsvxa2bju44
+          export DB_DATABASE=atsp62l7dqdqz9ve
+          export API_KEY_COIN=3144c6fc-815d-46d1-a588-60bc4e062a5c
           flask run
           pytest -p no:warnings 
           
