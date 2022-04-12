@@ -34,7 +34,7 @@ jobs:
           envkey_DB_USERNAME: ${{ secrets.DB_USERNAME }}
           envkey_DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           envkey_DB_DATABASE: ${{ secrets.DB_DATABASE }}
-          envkey_API_KEY_COIN: ${{serets.API_KEY_COIN }}
+          envkey_API_KEY_COIN: ${{ secrets.API_KEY_COIN }}
           file_name: .env
           
       - name : installation de pytest
