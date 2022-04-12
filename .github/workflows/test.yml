@@ -8,24 +8,20 @@ on:
       - master
 
 jobs:
-  my_python_job:
-    name: "Python"
+  build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python: 
-          - 3.8.9
-
     steps:
-    - uses: actions/checkout@v2
-    - name: Install python version
-      uses: gabrielfalcao/pyenv-action@v9
-      with:
-        default: "${{ matrix.python }}"
-        command: pip install -U pip  # upgrade pip after installing python
-
-    - name: Install dependencies
-      run: pip install -r requirements.txt
-
-    - name: Run tests
-      run: pytest .
+      - uses: actions/checkout@v2
+      - name: Install Python 3
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.8.9
+      - name: Pyenv Build
+        uses: gabrielfalcao/pyenv-action@v7
+        
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Run tests with pytest
+        run: pytest 
