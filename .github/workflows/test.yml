@@ -38,7 +38,7 @@ jobs:
           API_KEY_COIN: ${{ secrets.API_KEY_COIN }}
         run: |
           export FLASK_ENV=development
-          export FLASK_APP=${{ env.FLASK_APP }}
+          export FLASK_APP=$FLASK_APP
           export DB_HOST=${{ env.DB_HOST }}
           export DB_USERNAME=${{ env.DB_USERNAME }}
           export DB_PASSWORD=${{ env.DB_PASSWORD }}
