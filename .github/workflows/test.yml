@@ -15,7 +15,7 @@ jobs:
       - name: Install Python 3
         uses: actions/setup-python@v1
         with:
-          python-version: 3.8.9
+          python-version: 3.9.12
       - name: Pyenv Build
         uses: gabrielfalcao/pyenv-action@v7
         
