@@ -28,7 +28,10 @@ jobs:
         run: python -m pip install pytest
         
       - name : run flask
-        run: flask run
+        run: |
+          export FLASK_ENV=development
+          export FLASK_APP=run
+          flask run
         
       - name: Run tests with pytest
         run: pytest -p no:warnings 
