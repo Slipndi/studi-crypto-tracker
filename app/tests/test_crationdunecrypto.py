@@ -26,6 +26,5 @@ class TestCrationdunecrypto():
     self.driver.find_element(By.ID, "cryptomonnaie").click()
     dropdown = self.driver.find_element(By.ID, "cryptomonnaie")
     dropdown.find_element(By.XPATH, "//option[. = 'Bitcoin']").click()
-    self.driver.find_element(By.ID, "submit").click()
     self.driver.close()
   
