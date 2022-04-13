@@ -1,0 +1,217 @@
+{
+  "id": "c649c0ff-802a-4a45-833c-e5de3417f596",
+  "version": "2.0",
+  "name": "studi-crypto",
+  "url": "https://studi-crypto-tracker.herokuapp.com",
+  "tests": [{
+    "id": "db1ec935-a548-4754-8446-d90339e60e14",
+    "name": "afficher le graphique général",
+    "commands": [{
+      "id": "32765cd1-dbcc-499f-83a0-ddc484f487ff",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "487759ab-0e66-42e8-9c41-8675815a8d7a",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1440x819",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "70a30ea3-fbdf-44a0-acf6-4f659b0c4d4d",
+      "comment": "",
+      "command": "click",
+      "target": "css=h1",
+      "targets": [
+        ["css=h1", "css:finder"],
+        ["xpath=//h1", "xpath:position"],
+        ["xpath=//h1[contains(.,'-403.1964')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "97e22304-8ccd-4a19-ad0b-ede6bc668246",
+      "comment": "",
+      "command": "click",
+      "target": "id=Layer_1",
+      "targets": [
+        ["id=Layer_1", "id"],
+        ["css=#Layer_1", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "c4d0bf9a-1600-4810-b82c-932cf727f027",
+      "comment": "",
+      "command": "close",
+      "target": "",
+      "targets": [],
+      "value": ""
+    }]
+  }, {
+    "id": "b0c323ed-b403-4f8e-bf9d-15b21c287f31",
+    "name": "création d'une crypto",
+    "commands": [{
+      "id": "5215cf77-6fc5-40a3-a4f1-03899c909cb2",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "3371cf93-750f-4e12-8618-e7717caec6f8",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1440x819",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "9b91d4d1-6fdf-402c-b314-f69ea38d4040",
+      "comment": "",
+      "command": "click",
+      "target": "css=header",
+      "targets": [
+        ["css=header", "css:finder"],
+        ["xpath=//header", "xpath:position"],
+        ["xpath=//header[contains(.,'Crypto Tracker')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "34ed8d39-2a7d-4bf0-9980-8149de720202",
+      "comment": "",
+      "command": "click",
+      "target": "css=.ml-6 > svg",
+      "targets": [
+        ["css=.ml-6 > svg", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "7a88a340-1f79-4c0c-88bd-05c30aa7d58d",
+      "comment": "",
+      "command": "click",
+      "target": "id=cryptomonnaie",
+      "targets": [
+        ["id=cryptomonnaie", "id"],
+        ["name=cryptomonnaie", "name"],
+        ["css=#cryptomonnaie", "css:finder"],
+        ["xpath=//select[@id='cryptomonnaie']", "xpath:attributes"],
+        ["xpath=//select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "d94205bf-069f-468c-aa16-121f3a7c221f",
+      "comment": "",
+      "command": "select",
+      "target": "id=cryptomonnaie",
+      "targets": [],
+      "value": "label=Bitcoin"
+    }, {
+      "id": "b2f44167-5764-4c6f-aca6-f2f8212f38bb",
+      "comment": "",
+      "command": "click",
+      "target": "id=submit",
+      "targets": [
+        ["id=submit", "id"],
+        ["css=#submit", "css:finder"],
+        ["xpath=//button[@id='submit']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "f92b89cc-701b-468c-b31b-a1d1fd9da4d1",
+      "comment": "",
+      "command": "close",
+      "target": "",
+      "targets": [],
+      "value": ""
+    }]
+  }, {
+    "id": "1b34c6c8-f638-4a42-a8f8-d62c8a872608",
+    "name": "suppression d'une crypto",
+    "commands": [{
+      "id": "ca301ac0-ed59-4398-9b5f-7615d9f292d1",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "25347a97-1666-4c08-8e81-5038047cce59",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1440x819",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "ff970064-87b5-4698-985e-3647027a3d9b",
+      "comment": "",
+      "command": "click",
+      "target": "css=.flex:nth-child(2)",
+      "targets": [
+        ["css=.flex:nth-child(2)", "css:finder"],
+        ["xpath=//div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "693055de-2e44-49a2-a778-ebd7047ae47e",
+      "comment": "",
+      "command": "click",
+      "target": "id=Layer_1",
+      "targets": [
+        ["id=Layer_1", "id"],
+        ["css=#Layer_1", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "4cfa3de0-a047-43d2-af81-98ec6e5538f9",
+      "comment": "",
+      "command": "click",
+      "target": "id=cryptomonnaie",
+      "targets": [
+        ["id=cryptomonnaie", "id"],
+        ["name=cryptomonnaie", "name"],
+        ["css=#cryptomonnaie", "css:finder"],
+        ["xpath=//select[@id='cryptomonnaie']", "xpath:attributes"],
+        ["xpath=//select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "3f31107b-6782-43d6-97a4-7964b714d5ef",
+      "comment": "",
+      "command": "select",
+      "target": "id=cryptomonnaie",
+      "targets": [],
+      "value": "label=Bitcoin"
+    }, {
+      "id": "0b5bb404-5664-48dd-a040-83de8067f55f",
+      "comment": "",
+      "command": "click",
+      "target": "id=submit",
+      "targets": [
+        ["id=submit", "id"],
+        ["css=#submit", "css:finder"],
+        ["xpath=//button[@id='submit']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "f8d614be-3675-4614-b5c2-df1c868f6e4c",
+      "comment": "",
+      "command": "close",
+      "target": "",
+      "targets": [],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "f1960dda-9205-48cf-b5dc-9d81d5a9574b",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": []
+  }],
+  "urls": ["https://studi-crypto-tracker.herokuapp.com/"],
+  "plugins": []
+}
