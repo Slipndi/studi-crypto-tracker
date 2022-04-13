@@ -24,7 +24,5 @@ class TestCrationdunecrypto():
     self.driver.find_element(By.CSS_SELECTOR, "header").click()
     self.driver.find_element(By.CSS_SELECTOR, ".ml-6 > svg").click()
     self.driver.find_element(By.ID, "cryptomonnaie").click()
-    dropdown = self.driver.find_element(By.ID, "cryptomonnaie")
-    dropdown.find_element(By.XPATH, "//option[. = 'Bitcoin']").click()
     self.driver.close()
   
