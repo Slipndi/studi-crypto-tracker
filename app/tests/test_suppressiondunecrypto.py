@@ -25,7 +25,5 @@ class TestSuppressiondunecrypto():
     self.driver.find_element(By.CSS_SELECTOR, ".flex:nth-child(2)").click()
     self.driver.find_element(By.ID, "Layer_1").click()
     self.driver.find_element(By.ID, "cryptomonnaie").click()
-    dropdown = self.driver.find_element(By.ID, "cryptomonnaie")
-    dropdown.find_element(By.XPATH, "//option[. = 'Bitcoin']").click()
     self.driver.close()
   
