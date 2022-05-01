@@ -12,7 +12,7 @@ import mysql.connector
 
 app = Flask(__name__)
 
-cache = Cache(config={'CACHE_TYPE':'SimpleCache', 'CACHE_DEFAULT_TIMEOUT':18000})
+cache = Cache(config={'CACHE_TYPE':'SimpleCache', 'CACHE_DEFAULT_TIMEOUT':2000})
 
 mydb = mysql.connector.connect(
     host=os.getenv("DB_HOST"), 
