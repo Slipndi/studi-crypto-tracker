@@ -32,7 +32,7 @@ def get_amount_chart() -> str :
     ax.spines['left'].set_color(axis_color)
     
     start, end = ax.get_xlim()
-    ax.xaxis.set_ticks(np.arange(start, end, 2))
+    ax.xaxis.set_ticks(np.arange(start, end, 4))
     ax.set_ylabel('valorisation')     
     ax.xaxis.label.set_color(axis_color)
     ax.yaxis.label.set_color(axis_color)
